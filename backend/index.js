@@ -3,7 +3,8 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import mongoose from "mongoose";
-import router from "./routes/userRoutes.js";
+import userRoute from "./routes/userRoutes.js";
+import blogRoute from "./routes/blogRoutes.js"
 
 const app = express();
 dotenv.config();
@@ -17,7 +18,8 @@ app.use(
   })
 );
 
-app.use("/api/auth", router);
+app.use("/api/auth", userRoute);
+app.use("/api/blog", blogRoute)
 
 mongoose.connect(process.env.MONGO_URI).then(() => {
   const port = process.env.PORT || 5000;

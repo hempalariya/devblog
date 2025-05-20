@@ -53,7 +53,7 @@ export const Login = async (req, res) => {
       email: user.email,
       avatar: user.avatar,
     },
-    process.env.JWT_SECRET
+    process.env.JWT_SECRET 
   );
 
   res.cookie("access_token", token, {
@@ -87,3 +87,4 @@ export const Logout = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+ 
