@@ -1,37 +1,44 @@
 import Blog from "../models/blog.js";
 
-export const getAllBlogs = async(req, res) => {
+export const getAllBlogs = async (req, res) => {
+  try {
+    let blogs = await Blog.find({});
+    res.status(200).json(blogs);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "server error" });
+  }
+};
 
-}
+export const getUserBlog = async (req, res) => {};
 
-export const createBlog  = async(req, res) =>{
-    const {title, description, blogData } = req.body
+export const createBlog = async (req, res) => {
+  const { title, description, blogData } = req.body;
 
-    try{
-        const existingTitle = await Blog.findOne({
-            title
-        })
+  try {
+    const existingTitle = await Blog.findOne({
+      title,
+    });
 
-        if(existingTitle){
-            return res.status(409).json({error: 'A Blog with the title already exists.'})
-        }
-
-        const blog = await Blog.create({
-            title, description, blogData
-        })
-
-        res.status(200).json(blog)
-
-    }catch (error){
-        console.error(error)
-        res.status(500).json({error: "server error"})
+    if (existingTitle) {
+      return res
+        .status(409)
+        .json({ error: "A Blog with the title already exists." });
     }
-}
 
-export const getBlog = async(req, res) => {
+    const blog = await Blog.create({
+      title,
+      description,
+      blogData,
+    });
 
-}
-
-export const updateBlog = async(req, res) => {
+    res.status(200).json(blog);
+  } catch (error) {
     
-}
+    res.status(500).json({ error: "server error" });
+  }
+};
+
+export const getBlog = async (req, res) => {};
+
+export const updateBlog = async (req, res) => {};
