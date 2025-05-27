@@ -6,7 +6,7 @@ export default function BlogCard({ blog }) {
   const [showActions, setShowActions] = useState(false);
 
   return (
-    <div className="h-[300px] flex flex-col overflow-hidden rounded-md shadow-md group transition-all duration-500 relative">
+    <div className="h-[300px] flex flex-col overflow-hidden rounded-md shadow-md group transition-all duration-500 relative cursor-pointer">
       {/* Date tag */}
       <div className="absolute left-2 top-2 bg-blue-600 text-white text-center w-12 rounded-sm z-10">
         <h1 className="font-bold text-2xl">12</h1>

@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 
 import BlogCard from "../component/BlogCard";
+import { Link } from "react-router-dom";
 export default function Index() {
   const [blogs, setBlogs] = useState([]);
   const [error, setError] = useState("");
@@ -36,10 +37,16 @@ export default function Index() {
       ) : (
         <div className="grid grid-cols-[repeat(auto-fit,minmax(200px,1fr))] gap-4">
           {blogs.map((blog) => {
-            return <BlogCard key={blog._id} blog={blog} />;
+            return (
+              <Link key={blog._id} to={`/blog/${blog._id}`}>
+                <BlogCard blog={blog} />;
+              </Link>
+            );
           })}
         </div>
       )}
     </div>
   );
 }
+
+
