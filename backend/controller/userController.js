@@ -12,7 +12,7 @@ const createToken = (id) => {
 
 export const createNewUser = async (req, res) => {
   console.log(req.body);
-  const { name, email, mobile, password, confirmPassword } = req.body;
+  const { name, email, number, password, confirmPassword } = req.body;
   try {
     if (password !== confirmPassword)
       return res
@@ -20,18 +20,18 @@ export const createNewUser = async (req, res) => {
         .json({ error: "Password and confirmpassword did not match" });
 
     const existingEmail = await User.findOne({ email });
-    const existingMobile = await User.findOne({ mobile });
+    const existingNumber = await User.findOne({ number });
 
     if (existingEmail)
       return res.status(400).json({ error: "email already exist" });
-    if (existingMobile)
-      return res.status(400).json({ error: "mobile no already exist" });
+    if (existingNumber)
+      return res.status(400).json({ error: "number already exist" });
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await User.create({
       name,
       email,
-      mobile,
+      number,
       password: hashedPassword,
     });
     const token = createToken(user._id);
@@ -39,7 +39,7 @@ export const createNewUser = async (req, res) => {
       id: user._id,
       name,
       email,
-      mobile,
+      number,
       token,
     });
   } catch (error) {
@@ -54,7 +54,7 @@ export const userLogin = async (req, res) => {
     const user = await User.findOne({
       $or: [
         { email: userId },
-        { mobile: !isNaN(userId) ? Number(userId) : null },
+        { number: !isNaN(userId) ? Number(userId) : null },
       ],
     });
 
@@ -70,11 +70,12 @@ export const userLogin = async (req, res) => {
     res.status(200).json({
       _id: user._id,
       name: user.name,
-      mobile: user.mobile,
+      number: user.number,
       email: user.email,
       token,
     });
   } catch (error) {
+    console.log(error)
     res.status(400).json({ msg: error.message });
   }
 };
