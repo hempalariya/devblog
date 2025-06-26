@@ -4,8 +4,10 @@ import FormCard from "../components/FormCard";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import { Link } from "react-router-dom";
+import { useToast } from "../store/ToastContext";
 
 export default function SignUp() {
+  const { showToast } = useToast();
   const [info, setInfo] = useState({
     name: "",
     email: "",
@@ -16,9 +18,8 @@ export default function SignUp() {
 
   function handleChange(e) {
     let { name, value } = e.target;
-    if(name === 'number') value = Number(value)
+    if (name === "number") value = Number(value);
     setInfo((pre) => ({ ...pre, [name]: value }));
-    console.log(info);
   }
 
   async function handleAddUser(e) {
@@ -41,9 +42,14 @@ export default function SignUp() {
       });
 
       const data = await response.json();
-      console.log(data);
+      if (!response.ok) {
+        showToast(data.error, "Failed");
+      }
+
+      showToast(data.message)
+      
     } catch (error) {
-      console.error(error.message);
+      showToast(error.message, "Failed")
     }
   }
 

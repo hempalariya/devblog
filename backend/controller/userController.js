@@ -41,6 +41,7 @@ export const createNewUser = async (req, res) => {
       email,
       number,
       token,
+      message: `welcome ${name}`,
     });
   } catch (error) {
     res.status(400).json({ msg: error.message });
@@ -48,6 +49,7 @@ export const createNewUser = async (req, res) => {
 };
 
 export const userLogin = async (req, res) => {
+
   const { userId, password } = req.body;
 
   try {
@@ -57,6 +59,7 @@ export const userLogin = async (req, res) => {
         { number: !isNaN(userId) ? Number(userId) : null },
       ],
     });
+
 
     if (!user)
       return res.status(404).json({ error: "Invalid User Id or Password" });
@@ -73,9 +76,9 @@ export const userLogin = async (req, res) => {
       number: user.number,
       email: user.email,
       token,
+      message: `Welcome ${user.name}`,
     });
   } catch (error) {
-    console.log(error)
     res.status(400).json({ msg: error.message });
   }
 };
