@@ -69,12 +69,15 @@ export const userLogin = async (req, res) => {
     if (!match)
       return res.status(404).json({ error: "Invalid User Id or Password" });
 
-    const token = createToken(user._id);
-    res.status(200).json({
+    const loggedInUser = {
       _id: user._id,
       name: user.name,
       number: user.number,
       email: user.email,
+    }
+    const token = createToken(user._id);
+    res.status(200).json({
+      user: loggedInUser,
       token,
       message: `Welcome ${user.name}`,
     });

@@ -4,16 +4,24 @@ import { Link } from "react-router-dom";
 import { GoSignOut } from "react-icons/go";
 import { CgProfile } from "react-icons/cg";
 import { FaBlog } from "react-icons/fa";
-
+import { useDispatch, useSelector } from "react-redux";
+import { removeUser } from "../redux/user/userSlice";
 
 const flexClass = "flex gap-2 items-center";
 
 export default function Dropdown() {
+  const dispatch = useDispatch();
 
-  let signedIn = false
+  let isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
-  if(!signedIn) return <div className="absolute right-0 top-8 w-30 p-1 ring"><Link to={'signin'}><button>SignIn</button></Link></div>
-
+  if (!isLoggedIn)
+    return (
+      <div className="absolute right-0 top-8 w-30 p-1 ring">
+        <Link to={"signin"}>
+          <button>SignIn</button>
+        </Link>
+      </div>
+    );
 
   return (
     <div className="absolute right-0 top-8 w-30 p-1 ring">
@@ -27,7 +35,12 @@ export default function Dropdown() {
             <FaBlog /> Blogs
           </Link>
         </ul>
-        <button className={`${flexClass} cursor-pointer`}>
+        <button
+          className={`${flexClass} cursor-pointer`}
+          onClick={() => {
+            dispatch(removeUser());
+          }}
+        >
           <GoSignOut /> Sign Out
         </button>
       </div>

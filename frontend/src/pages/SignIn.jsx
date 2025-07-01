@@ -2,38 +2,42 @@ import React, { useState } from "react";
 import Container from "../components/Container";
 import Input from "../components/Input";
 import Button from "../components/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import FormCard from "../components/FormCard";
 import { useToast } from "../store/ToastContext";
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/user/userSlice";
 
 export default function SingnIn() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate()
+
   const [cred, setCred] = useState({ userId: "", password: "" });
   const { showToast } = useToast();
 
   function handleChange(e) {
     let { name, value } = e.target;
     setCred((pre) => ({ ...pre, [name]: value }));
-    console.log(cred)
   }
 
   async function handleLoginUser(e) {
     e.preventDefault();
-    try{
-
+    try {
       const response = await fetch(`http://localhost:3000/api/user/login`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(cred),
-        });
-      
-        const data = await response.json()
-        if(!response.ok) showToast(data.error, "Failed")
-        
-        showToast(data.message)
-    }catch(error){
-      showToast(error.message, 'Failed')
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(cred),
+      });
+
+      const data = await response.json();
+      if (!response.ok) showToast(data.error, "Failed");
+      dispatch(setUser(data.user));
+      navigate('/')
+      showToast(data.message);
+    } catch (error) {
+      showToast(error.message, "Failed");
     }
   }
 
