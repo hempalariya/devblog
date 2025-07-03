@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { GoSignOut } from "react-icons/go";
 import { CgProfile } from "react-icons/cg";
 import { FaBlog } from "react-icons/fa";
+import { IoIosAdd } from "react-icons/io";
+
 import { useDispatch, useSelector } from "react-redux";
 import { removeUser } from "../redux/user/userSlice";
 
@@ -30,6 +32,10 @@ export default function Dropdown() {
         <ul className="flex flex-col">
           <Link to="profile" className={`${flexClass}`}>
             <CgProfile /> Profile
+          </Link>
+          <Link to="blogs/create-blog" className={`${flexClass}`}>
+            <IoIosAdd />
+            Add Blog
           </Link>
           <Link to="" className={`${flexClass}`}>
             <FaBlog /> Blogs
