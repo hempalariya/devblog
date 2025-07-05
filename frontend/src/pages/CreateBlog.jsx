@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+
 import Editor from "../components/Editor";
 
 const labelCSS = "block text-xl";
@@ -7,7 +9,6 @@ const inputCSS =
 const controllerCss = "mb-2";
 
 export default function CreateBlog() {
-
   const [blogContent, setBlogContent] = useState({
     title: "",
     description: "",
@@ -15,16 +16,28 @@ export default function CreateBlog() {
     content: "",
   });
 
-  
+  const token = useSelector((state) => state.user.user.token);
 
   function handleChange(e) {
     const { name, value } = e.target;
     setBlogContent((prev) => ({ ...prev, [name]: value }));
   }
 
-  function handleAddBlog(e){
-    e.preventDefault()
-    console.log(data)
+  async function handleAddBlog(e) {
+    e.preventDefault();
+    try {
+      const response = await fetch(`http://localhost:3000/api/blog`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(blogContent),
+      });
+     console.log(response)
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   const handleEditorChange = (html) => {
@@ -34,7 +47,7 @@ export default function CreateBlog() {
   return (
     <div className="flex-1 py-5">
       <div>
-        <form action="">
+        <form action="" onSubmit={handleAddBlog}>
           <div className={controllerCss}>
             <label htmlFor="title" className={labelCSS}>
               Title
