@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 
 import Editor from "../components/Editor";
+import { useToast } from "../store/ToastContext";
+import { useNavigate } from "react-router-dom";
 
 const labelCSS = "block text-xl";
 const inputCSS =
@@ -15,6 +17,10 @@ export default function CreateBlog() {
     category: "",
     content: "",
   });
+
+  const navigate = useNavigate()
+
+  const {showToast} = useToast()
 
   const token = useSelector((state) => state.user.user.token);
 
@@ -34,9 +40,17 @@ export default function CreateBlog() {
         },
         body: JSON.stringify(blogContent),
       });
-     console.log(response)
+      
+      const data = await response.json()
+      
+      if(!response.ok){
+        showToast(data.message, 'Failed')
+      }
+      navigate('/')
+      showToast('Blog Created')
+
     } catch (error) {
-      console.error(error);
+      showToast(error, 'Failed')
     }
   }
 
@@ -56,7 +70,7 @@ export default function CreateBlog() {
               name="title"
               value={blogContent.title}
               type="text"
-              id="title"
+              id="title" required
               className={inputCSS}
               onChange={handleChange}
             />
@@ -69,7 +83,7 @@ export default function CreateBlog() {
               name="description"
               value={blogContent.description}
               type="text"
-              id="description"
+              id="description" required
               className={inputCSS}
               onChange={handleChange}
             />
@@ -81,7 +95,7 @@ export default function CreateBlog() {
             <select
               name="category"
               value={blogContent.category}
-              id="category"
+              id="category" required
               className="text-xl"
               onChange={handleChange}
             >

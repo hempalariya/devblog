@@ -11,7 +11,6 @@ const createToken = (id) => {
 };
 
 export const createNewUser = async (req, res) => {
-  console.log(req.body);
   const { name, email, number, password, confirmPassword } = req.body;
   try {
     if (password !== confirmPassword)
@@ -44,7 +43,7 @@ export const createNewUser = async (req, res) => {
       message: `welcome ${name}`,
     });
   } catch (error) {
-    res.status(400).json({ msg: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
