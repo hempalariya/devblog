@@ -8,6 +8,7 @@ import Profile from "./pages/Profile";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SingUp";
 import CreateBlog from "./pages/CreateBlog";
+import Blog from "./pages/Blog";
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
           <Route index element={<Index />} />
           <Route path="profile" element={<Profile />} />
           <Route path="blogs/create-blog" element={<CreateBlog/>}/>
+          <Route path="blog/:id" element = {<Blog />}/>
         </Route>
         <Route path="signin" element={<SignIn />} />
         <Route path="signup" element={<SignUp />} />

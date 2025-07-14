@@ -11,8 +11,6 @@ export default function Index() {
         const response = await fetch('http://localhost:3000/api/blog')
         const data = await response.json()
         setBlogData(data)
-
-        console.log(blogData)
         
       }catch(error){
         console.log(error)
@@ -26,7 +24,7 @@ export default function Index() {
   return (
     <div className='flex-1 grid grid-cols-[repeat(auto-fit,_minmax(250px,_1fr))] gap-4 py-10'>
       {blogData.map((blog) => {
-        return <Card blog = {blog}/>
+        return <Card blog = {blog} key={blog._id}/>
       })}
     </div>
   )

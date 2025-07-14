@@ -6,6 +6,19 @@ import Blog from "../models/blog.js";
 const window = new JSDOM('').window
 const DOMPurify = createDomPurify(window)
 
+export const getBlog = async (req, res) => {
+  const id = req.params.id
+  try{
+    const blog = await Blog.findById(id)
+    if(!blog){
+      throw new Error('Blog not found')
+    }
+    res.status(201).json(blog)
+  }catch(error){
+    res.status(401).json(error.message)
+  }
+}
+
 export const getAllBlog = async (req, res) => {
   try{
     const blogs = await Blog.find({})

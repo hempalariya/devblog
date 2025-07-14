@@ -1,35 +1,44 @@
 import React from "react";
+import {Link} from 'react-router-dom'
 import { CiHeart } from "react-icons/ci";
 import { FaRegCommentAlt } from "react-icons/fa";
 import { IoIosMore } from "react-icons/io";
+import noImage from "../assets/no-image.png";
 
-export default function Card({blog}) {
+export default function Card({ blog }) {
 
-  console.log(blog)
+  let image;
+  if (blog.image) {
+    image = blog.image;
+  } else {
+    image = noImage;
+  }
+  
+
+  let date = new Date(blog.createdAt);
+  const months = ['Jan', 'Feb', 'March', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+  const blogDate = date.getDate();
+  const blogMonth = months[date.getMonth()]
+  const blogYear = date.getFullYear()
 
   return (
-    <div className="shadow-sm rounded-lg">
-      <div className="h-[200px]">image</div>
-      <div>
-        <div className="flex justify-between bg-blue-400 p-1">
-          <span>
-            5 <CiHeart />
-          </span>{" "}
-          <span>
-            2 <FaRegCommentAlt />
-          </span>
-          <button>
-            <IoIosMore />
-          </button>
+    <Link to = {`/blog/${blog._id}`}>
+      <div className="relative shadow-sm shadow-blue-200 rounded-lg p-5 transition-all hover:scale-103">
+        <div className="absolute left-0 top-0 bg-blue-400 text-white text-md font-bold flex flex-col justify-center items-center p-1">
+          <p>{blogDate}</p>
+          <p>{blogMonth}</p>
+          <p>{blogYear}</p>
         </div>
-        <div className="flex flex-col gap-2 p-1">
-          <h1 className="text-2xl ">{blog.title}</h1>
-          <p className="text-xl">{blog.description}</p>
-          <p className="line-clamp-3">
-            <div dangerouslySetInnerHTML={{ __html: blog.content }} />
-          </p>
+        <div className="h-[200px] flex justify-center">
+          <img src={image} alt="" className="h-full" />
+        </div>
+        <div>
+          <div className="flex flex-col gap-2 p-1">
+            <h1 className="text-2xl ">{blog.title}</h1>
+          </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
