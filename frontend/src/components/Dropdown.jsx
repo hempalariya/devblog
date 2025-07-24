@@ -37,7 +37,7 @@ export default function Dropdown() {
             <IoIosAdd />
             Add Blog
           </Link>
-          <Link to="" className={`${flexClass}`}>
+          <Link to="blog/blogs" className={`${flexClass}`}>
             <FaBlog /> Blogs
           </Link>
         </ul>
