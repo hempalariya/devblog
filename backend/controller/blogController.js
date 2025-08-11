@@ -7,7 +7,7 @@ const window = new JSDOM("").window;
 const DOMPurify = createDomPurify(window);
 
 export const getBlog = async (req, res) => {
-  const id = req.params.id;
+  const { id } = req.params;
   try {
     const blog = await Blog.findById(id);
     if (!blog) {
@@ -20,7 +20,6 @@ export const getBlog = async (req, res) => {
 };
 
 export const getAllBlog = async (req, res) => {
-  console.log("get");
   try {
     const blogs = await Blog.find({});
     res.status(200).json(blogs);
@@ -58,13 +57,30 @@ export const getAllUserBlog = async (req, res) => {
   }
 };
 
-
 export const deleteUserBlog = async (req, res) => {
-  const id = req.params.id
+  const { id } = req.params;
+  try {
+    const blog = await Blog.findByIdAndDelete(id);
+    if (!blog) throw new Error("Blog not found");
+    console.log(blog);
+    res.status(200).json(blog);
+  } catch (error) {
+    console.log(error)
+    res.status(400).json({ error });
+  }
+};
+
+export const updateBlog = async (req, res) => {
+  const { id } = req.params;
+  const updateField = req.body
+
   try{
-    const blog = await Blog.findByIdAndDelete(id)
-    if(!blog) throw new Error("Blog not found")
-      console.log(blog)
+    const blog = await Blog.findByIdAndUpdate(
+      id,
+      {$set: updateField}
+
+    )
+    if(!blog) throw new Error('No blog found')
       res.status(200).json(blog)
   }catch(error){
     res.status(400).json({error})

@@ -4,17 +4,20 @@ import { MdDeleteOutline } from "react-icons/md";
 import { GrLike } from "react-icons/gr";
 import { FaRegComment } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function BlogRow({ blog }) {
   const token = useSelector((state) => state.user.user.token);
+  const navigate = useNavigate()
 
   let date = new Date(blog.createdAt);
-
+  console.log(blog)
+  
   const handleDelete = async () => {
-    let id = blog._id;
-    console.log(id);
+    const id = blog._id;
+    
     try {
-      const response = await fetch(`http://localhost:3000/api/id`, {
+      const response = await fetch(`http://localhost:3000/api/blog/${id}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -29,6 +32,11 @@ export default function BlogRow({ blog }) {
       console.log(error);
     }
   };
+  
+  const handleEdit = () => {
+    navigate(`/edit/${blog._id}`)
+  }
+
 
   const months = [
     "Jan",
@@ -65,7 +73,7 @@ export default function BlogRow({ blog }) {
       </div>
       <div className="flex gap-2 text-2xl">
         <button>
-          <CiEdit />
+          <CiEdit onClick={handleEdit}/>
         </button>
         <button onClick={handleDelete}>
           <MdDeleteOutline />
